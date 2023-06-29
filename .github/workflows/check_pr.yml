@@ -32,7 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install dbt-bigquery dbt-codegen pandas dbt-snowflake 
+          pip install dbt-bigquery dbt-snowflake pandas
           dbt deps
           dbt --version
       
