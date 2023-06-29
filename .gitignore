@@ -1,7 +1,7 @@
 
-target/
-dbt_packages/
-logs/
+silverwork_dbt/target/
+silverwork_dbt/dbt_packages/
+silverwork_dbt/logs/
 
 .env
 .idea

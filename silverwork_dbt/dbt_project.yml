@@ -32,7 +32,11 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   silverwork_dbt:
+    +materialized: view
     staging:
       +materialized: view
-    mart:
-      +materialized: table
+    marts:
+      agg:
+        +materialized: table
+      fact:
+        +materialized: incremental

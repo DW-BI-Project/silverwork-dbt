@@ -1,0 +1,9 @@
+#models:
+#  - name: stg_raw_data__jobs
+#    description: ""
+#    columns:
+#
+#
+#  - name: stg_raw_data__projects
+#    description: ""
+#    columns:
