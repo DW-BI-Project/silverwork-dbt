@@ -1,0 +1,45 @@
+name: Check PR
+
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+
+env:
+  DBT_PROFILES_DIR: silverwork_dbt/
+  BIGQUERY_PROJECT_ID: ${{ secrets.DBT_BIGQUERY_PROJECT_ID }}
+  BIGQUERY_DATASET_ID: ${{ secrets.DBT_BIGQUERY_DATASET_ID }}
+  BIGQUERY_SERVICE_ACCOUNT_KEY: ./dbt-service-account.json
+  
+  KEYFILE_CONTENTS: ${{secrets.KEYFILE_CONTENTS}}
+
+jobs:
+  build:
+    name: install and build dbt
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Authenticate using service account
+        run: echo "$KEYFILE_CONTENTS" > $BIGQUERY_SERVICE_ACCOUNT_KEY
+        env:
+          BIGQUERY_SERVICE_ACCOUNT_KEY: ${{secrets.BIGQUERY_SERVICE_ACCOUNT_KEY}}
+          
+      - name: Install Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.16
+          
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Install dependencies
+        run: |
+          pip install dbt-bigquery dbt-codegen pandas dbt-snowflake 
+          dbt deps
+          dbt --version
+      
+      - name: Run dbt models
+        run: dbt run --target dev
+
+      - name: Test dbt models
+        run: dbt test --target dev
