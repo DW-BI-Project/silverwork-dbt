@@ -1,0 +1,20 @@
+silverwork_dbt:
+  target: dev
+  outputs:
+    test:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
+      threads: 10
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('BIGQUERY_SERVICE_FILE') }}"
+      project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
+      dataset: "{{ env_var('BIGQUERY_DATASET_ID') }}"
+      threads: 10

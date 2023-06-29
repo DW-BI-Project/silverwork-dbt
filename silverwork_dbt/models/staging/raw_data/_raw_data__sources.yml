@@ -1,0 +1,179 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Schema for Pulibc Data API"
+    schema: raw_data
+    tables:
+      - name: jobs
+        description: "Source model for jobs"
+        columns:
+          - name: jobid
+            data_type: CHARACTER VARYING(20)
+            tests:
+              - not_null
+              - unique
+
+          - name: acptmthd
+            data_type: CHARACTER VARYING(2000)
+            description: "접수방법"
+
+          - name: deadline
+            data_type: CHARACTER VARYING(50)
+            description: "마감여부"
+
+          - name: emplymshp
+            data_type: CHARACTER VARYING(6)
+            description: ""
+
+          - name: emplymshpnm
+            data_type: CHARACTER VARYING(6)
+            description: ""
+          - name: jobcls
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: jobclsnm
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: orannm
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: organyn
+            data_type: CHARACTER VARYING(1)
+            description: ""
+          - name: recrttitle
+            data_type: CHARACTER VARYING(1000)
+            description: ""
+          - name: stmid
+            data_type: CHARACTER VARYING(1)
+            description: ""
+          - name: stmnm
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: enddd
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: workplc
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: acptmthdcd
+            data_type: CHARACTER VARYING(6)
+            description: ""
+          - name: age
+            data_type: CHARACTER VARYING(2)
+            description: ""
+          - name: ageyn
+            data_type: CHARACTER VARYING(1)
+            description: ""
+          - name: clerk
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: clerkcontt
+            data_type: CHARACTER VARYING(15)
+            description: ""
+          - name: clltprnnum
+            data_type: CHARACTER VARYING(4)
+            description: ""
+          - name: createdt
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: detcnts
+            data_type: CHARACTER VARYING(4000)
+            description: ""
+          - name: etcitm
+            data_type: CHARACTER VARYING(4000)
+            description: ""
+          - name: homepage
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: pldetaddr
+            data_type: CHARACTER VARYING(200)
+            description: ""
+          - name: plbiznm
+            data_type: CHARACTER VARYING(1000)
+            description: ""
+          - name: upddt
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: syscreatedat
+            data_type: TIMESTAMP_NTZ
+            description: ""
+          - name: startdd
+            data_type: DATE
+            description: ""
+
+      - name: projects
+        columns:
+          - name: projno
+            data_type: CHARACTER VARYING(20)
+            tests:
+              - not_null
+              - unique
+
+
+          - name: projtype
+            data_type: CHARACTER VARYING(30)
+            description: ""
+          - name: projplanchangeno
+            data_type: NUMBER(38,0)
+            description: ""
+          - name: projyear
+            data_type: CHARACTER VARYING(4)
+            description: ""
+          - name: contprojyn
+            data_type: CHARACTER VARYING(1)
+            description: ""
+          - name: contprojstartyear
+            data_type: CHARACTER VARYING(4)
+            description: ""
+          - name: projtypecd
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: projtypenm
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: nonbudgyn
+            data_type: CHARACTER VARYING(1)
+            description: ""
+          - name: specprojcd
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: projnm
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: admprovnm
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: admdistcd
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: admdistnm
+            data_type: CHARACTER VARYING(50)
+            description: ""
+          - name: institutionid
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: projstartdd
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: projenddd
+            data_type: CHARACTER VARYING(10)
+            description: ""
+          - name: planstatuscd
+            data_type: CHARACTER VARYING(20)
+            description: ""
+          - name: targetemployment
+            data_type: NUMBER(38,0)
+            description: ""
+          - name: firstlattachment
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: recentapprovalattachment
+            data_type: CHARACTER VARYING(100)
+            description: ""
+          - name: delyn
+            data_type: CHARACTER VARYING(1)
+            description: ""
+          - name: syscreatedat
+            data_type: TIMESTAMP_NTZ
+            description: ""
