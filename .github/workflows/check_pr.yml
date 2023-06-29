@@ -21,8 +21,6 @@ jobs:
 
       - name: Authenticate using service account
         run: echo "$KEYFILE_CONTENTS" > $BIGQUERY_SERVICE_ACCOUNT_KEY
-        env:
-          BIGQUERY_SERVICE_ACCOUNT_KEY: ${{secrets.BIGQUERY_SERVICE_ACCOUNT_KEY}}
           
       - name: Install Python 3.9
         uses: actions/setup-python@v2
