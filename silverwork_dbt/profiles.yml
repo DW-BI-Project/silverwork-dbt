@@ -1,4 +1,5 @@
 silverwork_dbt:
+  target: dev
   outputs:
     test:
       type: snowflake
@@ -9,12 +10,11 @@ silverwork_dbt:
       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
       role: "{{ env_var('SNOWFLAKE_ROLE') }}"
       schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
-      threads: 1
+      threads: 10
     dev:
       type: bigquery
       method: service-account
+      keyfile: "{{ env_var('BIGQUERY_SERVICE_FILE') }}"
       project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
       dataset: "{{ env_var('BIGQUERY_DATASET_ID') }}"
-      threads: 1
-      keyfile: "{{ env_var('BIGQUERY_SERVICE_ACCOUNT_KEY') }}"
-  target: test
+      threads: 10
