@@ -28,10 +28,7 @@ jobs:
           python-version: 3.9.16
           
       - name: Checkout Repo
-        uses: actions/checkout@v2
-        with:
-          ref: develop
-
+        uses: actions/checkout@master
 
       - name: Install dependencies
         run: |
