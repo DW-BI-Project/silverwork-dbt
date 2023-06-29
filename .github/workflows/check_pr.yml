@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install dbt-bigquery dbt-snowflake pandas
-          cd ${{ env.DBT_PROFILES_DIR }}
+          cd silverwork_dbt
           dbt --version
           dbt deps
       
