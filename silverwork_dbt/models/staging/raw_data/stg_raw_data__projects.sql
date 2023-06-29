@@ -2,6 +2,11 @@ with source as (
     select * from {{ source('raw', 'projects') }}
 ),
 
+filterd as (
+    select * from source
+    where admprovnm is not null
+),
+
 renamed as (
     select
 
@@ -13,8 +18,8 @@ renamed as (
         projyear as project_year,
         contprojstartyear as  continuous_project_start_year,
 
-        projtypenm as prject_type_name,
-        projnm as prject_name,
+        projtypenm as project_type_name,
+        projnm as project_name,
 
         admprovnm as administrative_province_name,
         admdistnm as administrative_district_name,
@@ -44,7 +49,7 @@ renamed as (
 
         -- timestamps
 
-    from source
+    from filterd
 ),
 
 added as (

@@ -1,9 +1,12 @@
-#models:
-#  - name: stg_raw_data__jobs
-#    description: ""
-#    columns:
-#
-#
-#  - name: stg_raw_data__projects
-#    description: ""
-#    columns:
+models:
+  - name: stg_raw_data__jobs
+
+  - name: stg_raw_data__projects
+    columns:
+      - name: administrative_province_iso
+        test:
+          - notnull
+
+      - name: administrative_province_name
+        test:
+          - notnull
