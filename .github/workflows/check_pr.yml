@@ -5,7 +5,7 @@ on:
     branches: [ "main", "develop" ]
 
 env:
-  DBT_PROFILES_DIR: silverwork_dbt/
+  DBT_PROFILES_DIR: ./silverwork_dbt
   BIGQUERY_PROJECT_ID: ${{ vars.DBT_BIGQUERY_PROJECT_ID }}
   BIGQUERY_DATASET_ID: ${{ vars.DBT_BIGQUERY_DATASET_ID }}
   BIGQUERY_SERVICE_ACCOUNT_KEY: ./dbt-service-account.json
@@ -20,7 +20,7 @@ jobs:
     steps:
 
       - name: Authenticate using service account
-        run: echo "$KEYFILE_CONTENTS" > $BIGQUERY_SERVICE_ACCOUNT_KEY
+        run: echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_ACCOUNT_KEY }}
           
       - name: Install Python 3.9
         uses: actions/setup-python@v2
