@@ -2,7 +2,7 @@ name: Check PR
 
 on:
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "test"]
 
 env:
   DBT_PROFILES_DIR: ./silverwork_dbt
