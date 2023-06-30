@@ -1,0 +1,60 @@
+name: Check PR
+
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+
+env:
+  working-directory: silverwork_dbt
+  DBT_PROFILES_DIR: ./
+  BIGQUERY_PROJECT_ID: ${{ vars.DBT_BIGQUERY_PROJECT_ID }}
+  BIGQUERY_DATASET_ID: ${{ vars.DBT_BIGQUERY_DATASET_ID }}
+  BIGQUERY_SERVICE_FILE: ./dbt-service-account.jso
+  KEYFILE_CONTENTS: ${{secrets.KEYFILE_CONTENTS}}
+  
+  SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+  SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+  SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+  SNOWFLAKE_USER: ${{ vars.SNOWFLAKE_USER }}
+  SNOWFLAKE_PASSWORD: ${{secrets.SNOWFLAKE_PASSWORD}}
+  SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+  SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
+
+jobs:
+  build:
+    name: install and build dbt
+    runs-on: ubuntu-latest
+        
+    steps:          
+      - name: Install Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.16
+          
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Authenticate using service account
+        run: echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
+        working-directory: ${{ env.working-directory }}
+
+      - name: Install dependencies
+        run: |
+          pip install dbt-bigquery dbt-snowflake pandas
+          dbt --version
+          dbt deps
+        working-directory: ${{ env.working-directory }}
+      
+      - name: Check source connection
+        run: dbt debug
+        working-directory: ${{ env.working-directory }}
+        
+      - name: Run dbt models
+        run: |
+            dbt run --target test
+        working-directory: ${{ env.working-directory }}
+        
+      - name: Test dbt models
+        run: |
+            dbt test --target test
+        working-directory: ${{ env.working-directory }}
