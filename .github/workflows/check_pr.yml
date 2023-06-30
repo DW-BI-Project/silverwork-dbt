@@ -16,9 +16,11 @@ jobs:
   build:
     name: install and build dbt
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./silverwork_dbt
+        
     steps:
-
       - name: Authenticate using service account
         run: echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
           
