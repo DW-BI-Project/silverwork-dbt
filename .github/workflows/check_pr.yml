@@ -56,13 +56,13 @@ jobs:
         working-directory: ${{ env.working-directory }}
       
       - name: Check source connection
-        run: dbt debug --target ${{ env.DBT_TARGET }}
+        run: dbt debug --target "${{ env.DBT_TARGET }}"
         working-directory: ${{ env.working-directory }}
         
       - name: Run dbt models
-        run: dbt run --target ${{ env.DBT_TARGET }}
+        run: dbt run --target "${{ env.DBT_TARGET }}"
         working-directory: ${{ env.working-directory }}
         
       - name: Test dbt models
-        run: dbt test --target ${{ env.DBT_TARGET }}
+        run: dbt test --target "${{ env.DBT_TARGET }}"
         working-directory: ${{ env.working-directory }}
