@@ -51,20 +51,9 @@ jobs:
         
       - name: Run dbt models
         run: |
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            dbt run --target dev
-          elif [ "$GITHUB_REF" = "refs/heads/develop" ]; then
             dbt run --target test
-          else
-            echo "Skipping dbt run for branch: $GITHUB_REF"
-        working-directory: ${{ env.working-directory }}
-        
+
       - name: Test dbt models
         run: |
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            dbt test --target dev
-          elif [ "$GITHUB_REF" = "refs/heads/develop" ]; then
             dbt test --target test
-          else
-            echo "Skipping dbt run for branch: $GITHUB_REF"
         working-directory: ${{ env.working-directory }}
