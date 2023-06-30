@@ -30,30 +30,52 @@ renamed as (
             ELSE '기타' END as employment_shape
         ,
 
-        -- numerics
-        clltprnnum::int as worker_number,
-
         -- booleans
         case
             when ageyn = 'Y' then true
             else false
         end as has_age_limit,
 
-        -- dates
+
+        -- numerics / dates / timestamps
+        {% if target.type == 'snowflake' %}
+
+        clltprnnum::int as worker_number,
+
         startdd::date as start_date,
         enddd::date as end_date,
 
-        -- timestamps
         createdt::timestamp as created_at,
         upddt::timestamp as updated_at
+
+        {% else %}
+
+        CAST(clltprnnum AS INT64) AS worker_number,
+
+        PARSE_DATE('%Y-%m-%d', startdd) AS start_date,
+        PARSE_DATE('%Y-%m-%d', enddd) AS end_date,
+
+        -- FIXME raw 데이터 상태 확인 후 처리
+--         PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', createDt) AS created_at,
+--         PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', upddt) AS updated_at
+
+        {% endif %}
 
     from source
 ),
 
 added as (
     select *
+
+        {% if target.type == 'snowflake' %}
         , EXTRACT(YEAR FROM start_date)::string as start_date_year
         , EXTRACT(MONTH FROM start_date)::string as start_date_month
+
+        {% else %}
+        , CAST(EXTRACT(YEAR FROM start_date) AS STRING) AS start_date_year
+        , CAST(EXTRACT(MONTH FROM start_date) AS STRING) AS start_date_month
+        {% endif %}
+
     from renamed
 )
 
