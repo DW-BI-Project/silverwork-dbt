@@ -2,10 +2,11 @@ name: Check PR
 
 on:
   pull_request:
-    branches: [ "test"]
+    branches: [ "main", "develop" ]
 
 env:
-  DBT_PROFILES_DIR: ./silverwork_dbt
+  working-directory: silverwork_dbt
+  DBT_PROFILES_DIR: ./
   BIGQUERY_PROJECT_ID: ${{ vars.DBT_BIGQUERY_PROJECT_ID }}
   BIGQUERY_DATASET_ID: ${{ vars.DBT_BIGQUERY_DATASET_ID }}
   BIGQUERY_SERVICE_FILE: ./dbt-service-account.json
@@ -16,14 +17,8 @@ jobs:
   build:
     name: install and build dbt
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./silverwork_dbt
         
-    steps:
-      - name: Authenticate using service account
-        run: echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
-          
+    steps:          
       - name: Install Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -32,14 +27,25 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
 
+      - name: Authenticate using service account
+        run: echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
+        working-directory: ${{ env.working-directory }}
+
       - name: Install dependencies
         run: |
           pip install dbt-bigquery pandas
           dbt --version
           dbt deps
+        working-directory: ${{ env.working-directory }}
       
+      - name: Check source connection
+        run: dbt debug
+        working-directory: ${{ env.working-directory }}
+        
       - name: Run dbt models
         run: dbt run --target dev
-
+        working-directory: ${{ env.working-directory }}
+        
       - name: Test dbt models
         run: dbt test --target dev
+        working-directory: ${{ env.working-directory }}
