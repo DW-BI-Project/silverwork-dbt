@@ -52,7 +52,7 @@ jobs:
           dbt --version
           dbt deps
         env:
-          DBT_TARGET: dev
+          DBT_TARGET: stage
         working-directory: ${{ env.working-directory }}
       
       - name: Check source connection
