@@ -52,7 +52,8 @@ jobs:
       - name: Run dbt models
         run: |
             dbt run --target test
-
+        working-directory: ${{ env.working-directory }}
+        
       - name: Test dbt models
         run: |
             dbt test --target test
