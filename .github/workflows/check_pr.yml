@@ -9,9 +9,16 @@ env:
   DBT_PROFILES_DIR: ./
   BIGQUERY_PROJECT_ID: ${{ vars.DBT_BIGQUERY_PROJECT_ID }}
   BIGQUERY_DATASET_ID: ${{ vars.DBT_BIGQUERY_DATASET_ID }}
-  BIGQUERY_SERVICE_FILE: ./dbt-service-account.json
-  
+  BIGQUERY_SERVICE_FILE: ./dbt-service-account.jso
   KEYFILE_CONTENTS: ${{secrets.KEYFILE_CONTENTS}}
+  
+  SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+  SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+  SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+  SNOWFLAKE_USER: ${{ vars.SNOWFLAKE_USER }}
+  SNOWFLAKE_PASSWORD: ${{secrets.SNOWFLAKE_PASSWORD}}
+  SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+  SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
 
 jobs:
   build:
@@ -33,7 +40,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install dbt-bigquery pandas
+          pip install dbt-bigquery dbt-snowflake pandas
           dbt --version
           dbt deps
         working-directory: ${{ env.working-directory }}
@@ -43,9 +50,21 @@ jobs:
         working-directory: ${{ env.working-directory }}
         
       - name: Run dbt models
-        run: dbt run --target dev
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            dbt run --target dev
+          elif [ "$GITHUB_REF" = "refs/heads/develop" ]; then
+            dbt run --target test
+          else
+            echo "Skipping dbt run for branch: $GITHUB_REF"
         working-directory: ${{ env.working-directory }}
         
       - name: Test dbt models
-        run: dbt test --target dev
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            dbt test --target dev
+          elif [ "$GITHUB_REF" = "refs/heads/develop" ]; then
+            dbt test --target test
+          else
+            echo "Skipping dbt run for branch: $GITHUB_REF"
         working-directory: ${{ env.working-directory }}
