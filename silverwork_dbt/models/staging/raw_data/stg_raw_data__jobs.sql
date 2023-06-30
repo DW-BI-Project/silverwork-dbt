@@ -68,12 +68,12 @@ added as (
     select *
 
         {% if target.type == 'snowflake' %}
-        , EXTRACT(YEAR FROM start_date)::string as start_date_year
-        , EXTRACT(MONTH FROM start_date)::string as start_date_month
+        , EXTRACT(YEAR FROM start_date)::string as year
+        , EXTRACT(MONTH FROM start_date)::string as month
 
         {% else %}
-        , CAST(EXTRACT(YEAR FROM start_date) AS STRING) AS start_date_year
-        , CAST(EXTRACT(MONTH FROM start_date) AS STRING) AS start_date_month
+        , CAST(EXTRACT(YEAR FROM start_date) AS STRING) AS year
+        , CAST(EXTRACT(MONTH FROM start_date) AS STRING) AS month
         {% endif %}
 
     from renamed

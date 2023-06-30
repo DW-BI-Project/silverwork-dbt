@@ -1,7 +1,5 @@
 with projects as (
-        select project_start_year as year
-            , project_start_month as month
-        from {{ ref('stg_raw_data__projects') }}
+        select year, month from {{ ref('stg_raw_data__projects') }}
 ),
 
 sum as (
