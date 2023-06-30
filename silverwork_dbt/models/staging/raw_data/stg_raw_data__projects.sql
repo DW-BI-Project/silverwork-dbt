@@ -16,18 +16,17 @@ renamed as (
         -- strings
         projtype as project_type,
         projyear as project_year,
-        contprojstartyear as  continuous_project_start_year,
-
         projtypenm as project_type_name,
         projnm as project_name,
-
         admprovnm as administrative_province_name,
         admdistnm as administrative_district_name,
         planstatuscd as plan_status,
 
-        -- numerics
-        projplanchangeno::int as project_plan_changed_number,
-        targetemployment::int as target_employment,
+        {% if target.type == 'snowflake' %}
+        LEFT(contprojstartyear, 4) as continuous_project_start_year,
+        {% else %}
+        SUBSTR(contprojstartyear, 1, 4) as continuous_project_start_year,
+        {% endif %}
 
         -- booleans
         CASE
@@ -43,19 +42,37 @@ renamed as (
             else false
         end as is_deleted,
 
-        -- dates
+        -- numerics / dates / timestamps
+        {% if target.type == 'snowflake' %}
+
+        projplanchangeno::int as project_plan_changed_number,
+        targetemployment::int as target_employment,
         projstartdd::date as project_start_date,
         projenddd::date as project_end_date
 
-        -- timestamps
+        {% else %}
+
+        CAST(projplanchangeno AS INT64) as project_plan_changed_number,
+        CAST(targetemployment AS INT64) as target_employment,
+        CAST(projstartdd AS DATE) as project_start_date,
+        CAST(projenddd AS DATE) as project_end_date
+
+        {% endif %}
 
     from filterd
 ),
 
 added as (
     select *
+
+        {% if target.type == 'snowflake' %}
         , EXTRACT(YEAR FROM project_start_date)::string as project_start_year
         , EXTRACT(MONTH FROM project_start_date)::string as project_start_month
+        {% else %}
+        , CAST(EXTRACT(YEAR FROM project_start_date) AS STRING) as project_start_year
+        , CAST(EXTRACT(MONTH FROM project_start_date) AS STRING) as project_start_month
+        {% endif %}
+
         , CASE administrative_province_name
              WHEN '서울특별시' THEN 'KR-11'
              WHEN '부산광역시' THEN 'KR-26'
