@@ -47,15 +47,15 @@ renamed as (
 
         projplanchangeno::int as project_plan_changed_number,
         targetemployment::int as target_employment,
-        projstartdd::date as project_start_date,
-        projenddd::date as project_end_date
+        projstartdd::date as start_date,
+        projenddd::date as end_date
 
         {% else %}
 
         CAST(projplanchangeno AS INT64) as project_plan_changed_number,
         CAST(targetemployment AS INT64) as target_employment,
-        CAST(projstartdd AS DATE) as project_start_date,
-        CAST(projenddd AS DATE) as project_end_date
+        CAST(projstartdd AS DATE) as start_date,
+        CAST(projenddd AS DATE) as end_date
 
         {% endif %}
 
@@ -66,11 +66,11 @@ added as (
     select *
 
         {% if target.type == 'snowflake' %}
-        , EXTRACT(YEAR FROM project_start_date)::string as project_start_year
-        , EXTRACT(MONTH FROM project_start_date)::string as project_start_month
+        , EXTRACT(YEAR FROM start_date)::string as year
+        , EXTRACT(MONTH FROM start_date)::string as month
         {% else %}
-        , CAST(EXTRACT(YEAR FROM project_start_date) AS STRING) as project_start_year
-        , CAST(EXTRACT(MONTH FROM project_start_date) AS STRING) as project_start_month
+        , CAST(EXTRACT(YEAR FROM start_date) AS STRING) as year
+        , CAST(EXTRACT(MONTH FROM start_date) AS STRING) as month
         {% endif %}
 
         , CASE administrative_province_name
