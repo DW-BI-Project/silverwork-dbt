@@ -2,7 +2,7 @@ name: Dev build image & push
 
 on:
   push:
-    branches: [ test ]
+    branches: [ main ]
 
 jobs:
   build:
