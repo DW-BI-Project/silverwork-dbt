@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 
 prefer_info = {
@@ -29,14 +31,11 @@ name_list = ['prefer', 'count']
 row_list = []
 
 def model(dbt, session):
-    dbt.config(
-        packages=["numpy"]
-    )
 
-    jobs_df = dbt.ref("stg_raw_data__jobs")
-    df = jobs_df.to_pandas()
+    jobs_df = dbt.ref("int_prefer__jobs")
+    df = jobs_df.toPandas()
 
-    for etc_itm in df["ETC_ITEM"]:
+    for etc_itm in df["prefer"]:
         if etc_itm == '':
             continue
         for key in prefer_info.keys():
