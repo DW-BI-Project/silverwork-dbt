@@ -9,8 +9,7 @@ env:
   DBT_PROFILES_DIR: ./
   BIGQUERY_PROJECT_ID: ${{ vars.DBT_BIGQUERY_PROJECT_ID }}
   BIGQUERY_DATASET_ID: ${{ vars.DBT_BIGQUERY_DATASET_ID }}
-  BIGQUERY_SERVICE_FILE: ./dbt-service-account.jso
-  KEYFILE_CONTENTS: ${{secrets.KEYFILE_CONTENTS}}
+  BIGQUERY_OAUTH_TOKEN: ${{ secrets.BIGQUERY_OAUTH_TOKEN }}
   
   SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
   SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
@@ -47,7 +46,6 @@ jobs:
       - name: Set up BigQuery environment
         if: ${{ github.base_ref == 'main' }}
         run: |
-          echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
           pip install dbt-snowflake pandas
           dbt --version
           dbt deps
