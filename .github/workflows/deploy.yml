@@ -47,12 +47,12 @@ jobs:
             ${{ secrets.DBT_REGISTRY_ENDPOINT }}:${{ steps.get-tag.outputs.short_ref }}
             ${{ secrets.DBT_REGISTRY_ENDPOINT }}:latest
 
-#      - name: Trigger Airflow init dag
-#        env:
-#          AIRFLOW_WEBSERVER_ENDPOINT: ${{ secrets.AIRFLOW_WEBSERVER_ENDPOINT }}
-#          AIRFLOW_WEBSERVER_ID: ${{ secrets.AIRFLOW_WEBSERVER_ID }}
-#          AIRFLOW_WEBSERVER_PASSWORD: ${{ secrets.AIRFLOW_WEBSERVER_PASSWORD }}
-#          AIRFLOW_DBT_INIT_DAG_ID: ${{ secrets.AIRFLOW_DBT_INIT_DAG_ID }}
-#        shell: bash
-#        run: |
-#          curl "$AIRFLOW_WEBSERVER_ENDPOINT/api/v1/dags/$AIRFLOW_DBT_INIT_DAG_ID/dagRuns" --user "$AIRFLOW_WEBSERVER_ID:$AIRFLOW_WEBSERVER_PASSWORD" -H 'Content-Type: application/json' -d '{}'
+      - name: Trigger Airflow init dag
+        env:
+          AIRFLOW_WEBSERVER_ENDPOINT: ${{ secrets.AIRFLOW_WEBSERVER_ENDPOINT }}
+          AIRFLOW_WEBSERVER_ID: ${{ secrets.AIRFLOW_WEBSERVER_ID }}
+          AIRFLOW_WEBSERVER_PASSWORD: ${{ secrets.AIRFLOW_WEBSERVER_PASSWORD }}
+          AIRFLOW_DBT_INIT_DAG_ID: ${{ secrets.AIRFLOW_DBT_INIT_DAG_ID }}
+        shell: bash
+        run: |
+          curl "$AIRFLOW_WEBSERVER_ENDPOINT/api/v1/dags/$AIRFLOW_DBT_INIT_DAG_ID/dagRuns" --user "$AIRFLOW_WEBSERVER_ID:$AIRFLOW_WEBSERVER_PASSWORD" -H 'Content-Type: application/json' -d '{}'
