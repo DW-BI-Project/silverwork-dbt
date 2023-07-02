@@ -35,17 +35,17 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Set up Snowflake environment
-        if: github.ref != 'refs/heads/main'
+        if: ${{ github.base_ref == 'develop' }}
         run: |
           pip install dbt-snowflake pandas
           dbt --version
           dbt deps
         env:
-          DBT_TARGET: test
+          DBT_TARGET: dev
         working-directory: ${{ env.working-directory }}
 
       - name: Set up BigQuery environment
-        if: github.ref == 'refs/heads/main'
+        if: ${{ github.base_ref == 'main' }}
         run: |
           echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
           pip install dbt-snowflake pandas
