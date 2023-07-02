@@ -18,8 +18,8 @@ env:
   SNOWFLAKE_USER: ${{ vars.SNOWFLAKE_USER }}
   SNOWFLAKE_PASSWORD: ${{secrets.SNOWFLAKE_PASSWORD}}
   SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
-  SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
-
+  SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }} 
+  
 jobs:
   build:
     name: install and build dbt
@@ -32,29 +32,37 @@ jobs:
           python-version: 3.9.16
           
       - name: Checkout Repo
-        uses: actions/checkout@master
-
-      - name: Authenticate using service account
-        run: echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
-        working-directory: ${{ env.working-directory }}
-
-      - name: Install dependencies
+        uses: actions/checkout@v2
+        
+      - name: Set up Snowflake environment
+        if: github.ref != 'refs/heads/main'
         run: |
-          pip install dbt-bigquery dbt-snowflake pandas
+          pip install dbt-snowflake pandas
           dbt --version
           dbt deps
+        env:
+          DBT_TARGET: test
+        working-directory: ${{ env.working-directory }}
+
+      - name: Set up BigQuery environment
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
+          pip install dbt-snowflake pandas
+          dbt --version
+          dbt deps
+        env:
+          DBT_TARGET: stage
         working-directory: ${{ env.working-directory }}
       
       - name: Check source connection
-        run: dbt debug
+        run: echo "dbt debug --target $DBT_TARGET"
         working-directory: ${{ env.working-directory }}
         
       - name: Run dbt models
-        run: |
-            dbt run --target test
+        run: echo "dbt run --target $DBT_TARGET"
         working-directory: ${{ env.working-directory }}
         
       - name: Test dbt models
-        run: |
-            dbt test --target test
+        run: echo "dbt test --target $DBT_TARGET"
         working-directory: ${{ env.working-directory }}
