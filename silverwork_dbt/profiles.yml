@@ -1,5 +1,5 @@
 silverwork_dbt:
-  target: stage
+  target: prod
   outputs:
     dev:
       type: snowflake
@@ -15,6 +15,15 @@ silverwork_dbt:
       type: bigquery
       method: service-account
       keyfile: "{{ env_var('BIGQUERY_SERVICE_FILE') }}"
+      project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
+      dataset: "{{ env_var('BIGQUERY_DATASET_ID') }}"
+      dataproc_region: us-central1
+      gcs_bucket: silverwork-bucket
+      dataproc_cluster_name: dbt-cluster
+      threads: 10
+    prod:
+      type: bigquery
+      method: oauth
       project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
       dataset: "{{ env_var('BIGQUERY_DATASET_ID') }}"
       dataproc_region: us-central1
