@@ -23,10 +23,21 @@ silverwork_dbt:
       threads: 10
     prod:
       type: bigquery
-      method: oauth
+      method: service-account-json
       project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
       dataset: "{{ env_var('BIGQUERY_DATASET_ID') }}"
       dataproc_region: us-central1
       gcs_bucket: silverwork-bucket
       dataproc_cluster_name: dbt-cluster
       threads: 10
+      keyfile_json:
+        type: "{{ env_var('BIGQUERY_JSON_TYPE') }}"
+        project_id: "{{ env_var('BIGQUERY_JSON_PROJECT_ID') }}"
+        private_key_id: "{{ env_var('BIGQUERY_JSON_PRIVATE_KEY_ID') }}"
+        private_key: "{{ env_var('BIGQUERY_JSON_PRIVATE_KEY') }}"
+        client_email: "{{ env_var('BIGQUERY_JSON_CLIENT_EMAIL') }}"
+        client_id: "{{ env_var('BIGQUERY_JSON_CLIENT_ID') }}"
+        auth_uri: "{{ env_var('BIGQUERY_JSON_AUTH_URI') }}"
+        token_uri: "{{ env_var('BIGQUERY_JSON_TOKEN_URI') }}"
+        auth_provider_x509_cert_url: "{{ env_var('BIGQUERY_JSON_AUTH_PROVIDER_X509_CERT_URL') }}"
+        client_x509_cert_url: "{{ env_var('BIGQUERY_JSON_CLIENT_X509_CERT_URL') }}"
