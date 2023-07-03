@@ -9,7 +9,8 @@ env:
   DBT_PROFILES_DIR: ./
   BIGQUERY_PROJECT_ID: ${{ vars.DBT_BIGQUERY_PROJECT_ID }}
   BIGQUERY_DATASET_ID: ${{ vars.DBT_BIGQUERY_DATASET_ID }}
-  BIGQUERY_OAUTH_TOKEN: ${{ secrets.BIGQUERY_OAUTH_TOKEN }}
+  BIGQUERY_SERVICE_FILE: ./dbt-service-account.json
+  KEYFILE_CONTENTS: ${{secrets.KEYFILE_CONTENTS}}
   
   SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
   SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
@@ -37,8 +38,6 @@ jobs:
         if: ${{ github.base_ref == 'develop' }}
         run: |
           pip install dbt-snowflake pandas
-          dbt --version
-          dbt deps
         env:
           DBT_TARGET: dev
         working-directory: ${{ env.working-directory }}
@@ -46,15 +45,17 @@ jobs:
       - name: Set up BigQuery environment
         if: ${{ github.base_ref == 'main' }}
         run: |
-          pip install dbt-snowflake pandas
-          dbt --version
-          dbt deps
+          echo "$KEYFILE_CONTENTS" > ${{ env.BIGQUERY_SERVICE_FILE }}
+          pip install dbt-bigquery pandas
         env:
           DBT_TARGET: stage
         working-directory: ${{ env.working-directory }}
       
       - name: Check source connection
-        run: echo "dbt debug --target $DBT_TARGET"
+        run: |
+          dbt --version
+          dbt deps
+          echo "dbt debug --target $DBT_TARGET"
         working-directory: ${{ env.working-directory }}
         
       - name: Run dbt models
