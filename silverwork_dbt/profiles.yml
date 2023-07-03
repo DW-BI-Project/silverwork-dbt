@@ -13,8 +13,8 @@ silverwork_dbt:
       threads: 10
     stage:
       type: bigquery
-      method: oauth-secrets
-      token: "{{ env_var('BIGQUERY_OAUTH_TOKEN') }}"
+      method: service-account
+      keyfile: "{{ env_var('BIGQUERY_SERVICE_FILE') }}"
       project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
       dataset: "{{ env_var('BIGQUERY_DATASET_ID') }}"
       dataproc_region: us-central1
