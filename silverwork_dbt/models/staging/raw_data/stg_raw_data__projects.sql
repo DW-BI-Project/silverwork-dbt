@@ -84,6 +84,7 @@ added as (
              WHEN '세종특별자치시' THEN 'KR-50'
              WHEN '경기도' THEN 'KR-41'
              WHEN '강원도' THEN 'KR-42'
+             WHEN '강원특별자치도' THEN 'KR-42'
              WHEN '충청북도' THEN 'KR-43'
              WHEN '충청남도' THEN 'KR-44'
              WHEN '전라북도' THEN 'KR-45'

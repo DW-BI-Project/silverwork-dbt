@@ -11,7 +11,7 @@ filter as(
            , year - continuous_project_start_year AS duration_years
         from projects
     {% else %}
-      select year , continuous_project_start_year
+      select *
            , CAST(year AS int) - CAST(continuous_project_start_year AS int) AS duration_years
         from projects
     {% endif %}
