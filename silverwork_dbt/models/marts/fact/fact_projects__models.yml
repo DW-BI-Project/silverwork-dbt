@@ -1,0 +1,64 @@
+models:
+  - name: fct_projects
+    config:
+      unique_key: project_id
+
+    columns:
+      - name: project_id
+        tests:
+          - not_null
+          - unique
+
+      - name: project_type
+        description: ""
+
+      - name: project_year
+        description: ""
+
+      - name: project_type_name
+        description: ""
+
+      - name: project_name
+        description: ""
+
+      - name: administrative_province_name
+        description: ""
+
+      - name: administrative_district_name
+        description: ""
+
+      - name: plan_status
+        description: ""
+
+      - name: continuous_project_start_year
+        description: ""
+
+      - name: is_continuous_project
+        description: ""
+
+      - name: is_non_bugdet
+        description: ""
+
+      - name: is_deleted
+        description: ""
+
+      - name: project_plan_changed_number
+        description: ""
+
+      - name: target_employment
+        description: ""
+
+      - name: start_date
+        description: ""
+
+      - name: end_date
+        description: ""
+
+      - name: year
+        description: ""
+
+      - name: month
+        description: ""
+
+      - name: administrative_province_iso
+        description: ""
