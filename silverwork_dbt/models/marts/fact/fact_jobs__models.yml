@@ -1,0 +1,64 @@
+models:
+  - name: fct_jobs
+    config:
+      unique_key: job_id
+
+    columns:
+      - name: job_id
+        tests:
+          - not_null
+          - unique
+
+      - name: accept_method
+        description: ""
+
+      - name: deadline
+        description: ""
+
+      - name: job_class_name
+        description: ""
+
+      - name: organization_name
+        description: ""
+
+      - name: recruitment_title
+        description: ""
+
+      - name: age
+        description: ""
+
+      - name: detail_contents
+        description: ""
+
+      - name: etc_item
+        description: ""
+
+      - name: work_place
+        description: ""
+
+      - name: place_detail_address
+        description: ""
+
+      - name: place_business_name
+        description: ""
+
+      - name: employment_shape
+        description: ""
+
+      - name: has_age_limit
+        description: ""
+
+      - name: worker_number
+        description: ""
+
+      - name: start_date
+        description: ""
+
+      - name: end_date
+        description: ""
+
+      - name: year
+        description: ""
+
+      - name: month
+        description: ""

@@ -45,8 +45,15 @@ renamed as (
         startdd::date as start_date,
         enddd::date as end_date,
 
-        createdt::timestamp as created_at,
-        upddt::timestamp as updated_at
+        case
+            when createDt != 'nan' then createdt::timestamp
+            else createdy::timestamp
+        end AS created_at,
+
+        case
+            when upddt != 'nan' then upddt::timestamp
+            else null
+        end AS updated_at
 
         {% else %}
 
@@ -55,9 +62,15 @@ renamed as (
         PARSE_DATE('%Y-%m-%d', startdd) AS start_date,
         PARSE_DATE('%Y-%m-%d', enddd) AS end_date,
 
-        -- FIXME raw 데이터 상태 확인 후 처리
---         PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', createDt) AS created_at,
---         PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', upddt) AS updated_at
+        case
+            when createDt != 'nan' then PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', createDt)
+            else PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', createDy)
+        end AS created_at,
+
+        case
+            when upddt != 'nan' then PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%E*S%Ez', upddt)
+            else null
+        end AS updated_at
 
         {% endif %}
 
