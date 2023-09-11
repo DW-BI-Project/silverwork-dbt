@@ -1,4 +1,4 @@
-# LuxuryBrands_Airflow
+# silverwork-dbt
 DBT를 이용한 ELT 파이프라인 모듈  [[프로젝트 전체보기]](https://github.com/SilverWork)
 <br/>
 
